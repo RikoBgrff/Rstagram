@@ -5,6 +5,7 @@ namespace Rstagram.DB
 {
     public class ApplicationDbContext : DbContext
     {
+
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
         }
@@ -19,6 +20,10 @@ namespace Rstagram.DB
             modelBuilder.Entity<Friendship>()
                 .HasNoKey();
             base.OnModelCreating(modelBuilder);
+        }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            base.OnConfiguring(optionsBuilder);
         }
     }
 }

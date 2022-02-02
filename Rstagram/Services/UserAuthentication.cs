@@ -2,20 +2,29 @@
 
 namespace Rstagram.Services
 {
-    public class UserAuthentication
+    public class UserAuthentication : IUserAuthentication
     {
-        public ApplicationDbContext context { get; set; }
+        private readonly ApplicationDbContext context;
 
-        public bool AuthenticateUser(string username, string password)
+        public UserAuthentication(ApplicationDbContext context)
+        {
+            this.context = context;
+        }
+
+        public int AuthenticateUser(string username, string password)
         {
             foreach (var item in context.Users)
             {
-                if (item.Username != username && item.Password != password)
+                if (item.Username == username && item.Password == password && item.Discriminator == "SimpleUser")
                 {
-                    return true;
+                    return 1;
+                }
+                else if (item.Username == username && item.Password == password && item.Discriminator == "SuperUser")
+                {
+                    return 2;
                 }
             }
-            return false;
+            return 0;
         }
     }
 }
